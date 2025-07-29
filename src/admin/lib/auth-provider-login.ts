@@ -59,3 +59,35 @@ export const medusaAuthProviderLogin = async (provider: string, callbackUrl: str
   }
   return data.location
 }
+
+const callbackRoute = (provider: string) => `/auth/user/${provider}/callback`;
+
+/**
+ * Handles the callback from the authentication provider.
+ * 
+ * @param provider - The authentication provider name (e.g., "keycloak", "google")
+ * @param params - Query parameters returned by the authentication provider
+ * @returns The authentication token for the authenticated user
+ * 
+ * @example
+ * ```typescript
+ * await medusaAuthProviderCallback("keycloak", { code: "abc123", state: "xyz" });
+ * ```
+ */
+export const medusaAuthProviderCallback = async (provider: string, params: Record<string, string>): Promise<string> => {
+  const callbackUrl = getMedusaUrl(callbackRoute(provider), params)
+  const response = await fetch(callbackUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  if (!response.ok) {
+    throw new Error("Received non-200 status code")
+  }
+  const data = await response.json()
+  if (!data.token) {
+    throw new Error("No token received")
+  }
+  return data.token
+}

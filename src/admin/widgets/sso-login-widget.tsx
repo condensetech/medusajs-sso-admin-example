@@ -3,6 +3,8 @@ import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { Button } from "@medusajs/ui"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { medusaAuthProviderLogin } from "../lib/auth-provider-login"
+import { useEffect } from "react"
+import { medusaAuthProviderCallback } from "../lib/auth-provider-login"
 
 const providers = [
   {
@@ -40,7 +42,28 @@ const SsoLoginWidget = () => {
     }
   }
 
-  // TODO: Callback Logic
+  const handleLoginCallback = async (provider: string, params: Record<string, string>) => {
+    setIsLoading(true)
+    try {
+      let token = await medusaAuthProviderCallback(provider, params)
+      console.log(`Obtained token: ${token}`)
+      // TODO: Init Session
+    } catch (error) {
+      console.error(error)
+      setError(`Failed to complete Keycloak login: ${formatError(error)}`)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  
+  useEffect(() => {
+    if (currentProvider) {
+      const params = Object.fromEntries(
+        Array.from(searchParams.entries()).filter(([key]) => key !== "provider") as [string, string][]
+      )
+      handleLoginCallback(currentProvider, params)
+    }
+  }, [currentProvider])
 
   return (
     <div className="justify-between py-2">
