@@ -25,6 +25,8 @@
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.8.8",
+    "@medusajs/auth": "^2.8.8",
+    "@medusajs/auth-google": "^2.8.8",
     "@medusajs/cli": "2.8.8",
     "@medusajs/framework": "2.8.8",
     "@medusajs/medusa": "2.8.8",
