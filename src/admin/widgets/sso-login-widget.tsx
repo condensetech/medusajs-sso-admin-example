@@ -5,6 +5,8 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { medusaAuthProviderLogin } from "../lib/auth-provider-login"
 import { useEffect } from "react"
 import { medusaAuthProviderCallback } from "../lib/auth-provider-login"
+import { jwtDecode } from "jwt-decode"
+import { medusaTokenRefresh, medusaInitSession, medusaUserRegister } from "../lib/auth-provider-login"
 
 const providers = [
   {
@@ -46,8 +48,14 @@ const SsoLoginWidget = () => {
     setIsLoading(true)
     try {
       let token = await medusaAuthProviderCallback(provider, params)
-      console.log(`Obtained token: ${token}`)
-      // TODO: Init Session
+      const decodedToken = jwtDecode(token) as { actor_id: string }
+      if (decodedToken.actor_id === "") {
+        await medusaUserRegister(provider, token)
+        token = await medusaTokenRefresh(token)
+      }
+      await medusaInitSession(token)
+      const from = (location as any).state?.from?.pathname || "/orders"
+      navigate(from, { replace: true })
     } catch (error) {
       console.error(error)
       setError(`Failed to complete Keycloak login: ${formatError(error)}`)
