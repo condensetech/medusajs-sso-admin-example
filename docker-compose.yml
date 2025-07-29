@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: medusa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  medusa:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "9000:9000"
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/medusa
+      - REDIS_URL=redis://redis:6379
+      - HMR_HOST=0.0.0.0
+      - MEDUSA_BACKEND_URL=http://localhost:9000
+    env_file:
+      - .env
+    volumes:
+      - ./src:/server/src
+      - ./medusa-config.ts:/server/medusa-config.ts
+      - /server/node_modules
+      - /server/.yarn
+
+volumes:
+  postgres_data:
