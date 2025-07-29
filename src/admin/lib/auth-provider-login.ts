@@ -91,3 +91,80 @@ export const medusaAuthProviderCallback = async (provider: string, params: Recor
   }
   return data.token
 }
+
+const registerUserRoute = (provider: string) => `/auth/${provider}/register`
+const refreshTokenPath = `/auth/token/refresh`
+const initSessionPath = `/auth/session`
+
+/**
+ * Registers a user with the authentication provider.
+ * 
+ * @param provider - The authentication provider name (e.g., "keycloak", "google")
+ * @param token - The authentication token from the callback
+ * 
+ * @example
+ * ```typescript
+ * await medusaUserRegister("keycloak", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+ * ```
+ */
+export const medusaUserRegister = async (provider: string, token: string): Promise<void> => {
+  const registerUrl = getMedusaUrl(registerUserRoute(provider))
+  const response = await fetch(registerUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+  })
+  if (!response.ok) {
+    throw new Error("Received non-200 status code")
+  }
+}
+
+/**
+ * Refreshes an expired authentication token.
+ * 
+ * @param token - The current authentication token to refresh
+ * @returns A new authentication token
+ * 
+ * @example
+ * ```typescript
+ * const newToken = await medusaTokenRefresh("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+ * ```
+ */
+export const medusaTokenRefresh = async (token: string): Promise<string> => {
+  const refreshUrl = getMedusaUrl(refreshTokenPath)
+  const response = await fetch(refreshUrl, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!response.ok) {
+    throw new Error("Received non-200 status code")
+  }
+  const data = await response.json()
+  if (!data.token) {
+    throw new Error("No token received")
+  }
+  return data.token
+}
+
+/**
+ * Initializes a user session with the authentication token.
+ * 
+ * @param token - The authentication token to establish the session
+ * 
+ * @example
+ * ```typescript
+ * await medusaInitSession("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+ * ```
+ */
+export const medusaInitSession = async (token: string): Promise<void> => {
+  const sessionUrl = getMedusaUrl(initSessionPath)
+  const response = await fetch(sessionUrl, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!response.ok) {
+    throw new Error("Received non-200 status code")
+  }
+}
