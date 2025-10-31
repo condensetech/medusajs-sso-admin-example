@@ -3538,6 +3538,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/knex@npm:6.4.16":
+  version: 6.4.16
+  resolution: "@mikro-orm/knex@npm:6.4.16"
+  dependencies:
+    fs-extra: 11.3.0
+    knex: 3.1.0
+    sqlstring: 2.3.3
+  peerDependencies:
+    "@mikro-orm/core": ^6.0.0
+    better-sqlite3: "*"
+    libsql: "*"
+    mariadb: "*"
+  peerDependenciesMeta:
+    better-sqlite3:
+      optional: true
+    libsql:
+      optional: true
+    mariadb:
+      optional: true
+  checksum: a4f258156284a54847d2bd4c76ba08e2807b2739d3119c5381fad52c8636e12fae787c58903865a99734885cd393485fa8f48953fd984bef12743f6337d001e4
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/knex@npm:6.4.3":
   version: 6.4.3
   resolution: "@mikro-orm/knex@npm:6.4.3"
@@ -3561,16 +3584,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/migrations@npm:6.4.3":
-  version: 6.4.3
-  resolution: "@mikro-orm/migrations@npm:6.4.3"
+"@mikro-orm/migrations@npm:6.4.16":
+  version: 6.4.16
+  resolution: "@mikro-orm/migrations@npm:6.4.16"
   dependencies:
-    "@mikro-orm/knex": 6.4.3
-    fs-extra: 11.2.0
+    "@mikro-orm/knex": 6.4.16
+    fs-extra: 11.3.0
     umzug: 3.8.2
   peerDependencies:
     "@mikro-orm/core": ^6.0.0
-  checksum: 39151650531c1bfad3b83cfc39d479d18f5422c3c5f1a1e5865400168644a338a06b5f63d5423f830122189140240220904df4f3dd4ad3bad3fdc6aea3908c5e
+  checksum: fd50bb179fbfce97d5a198e090b8b9f61586bdd5e21dce8463978dce478923eca3c6a2a9ef7c2584414b4d3c817e684ce7fd35626c2fe987f249dc3a3797d78e
   languageName: node
   linkType: hard
 
@@ -10536,6 +10559,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fs-extra@npm:11.3.0":
+  version: 11.3.0
+  resolution: "fs-extra@npm:11.3.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: f983c706e0c22b0c0747a8e9c76aed6f391ba2d76734cf2757cd84da13417b402ed68fe25bace65228856c61d36d3b41da198f1ffbf33d0b34283a2f7a62c6e9
+  languageName: node
+  linkType: hard
+
 "fs-extra@npm:^10.0.0":
   version: 10.1.0
   resolution: "fs-extra@npm:10.1.0"
@@ -12431,7 +12465,7 @@ __metadata:
     "@mikro-orm/cli": 6.4.3
     "@mikro-orm/core": 6.4.3
     "@mikro-orm/knex": 6.4.3
-    "@mikro-orm/migrations": 6.4.3
+    "@mikro-orm/migrations": 6.4.16
     "@mikro-orm/postgresql": 6.4.3
     "@swc/core": 1.5.7
     "@swc/jest": ^0.2.36
